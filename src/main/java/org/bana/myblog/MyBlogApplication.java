@@ -1,8 +1,22 @@
 package org.bana.myblog;
 
+import java.util.Date;
+import java.util.UUID;
+
+import org.bana.entity.Author;
+import org.bana.entity.Category;
+import org.bana.entity.Post;
+import org.bana.entity.Role;
+import org.bana.repo.AuthorRepo;
+import org.bana.repo.CategoryRepo;
+import org.bana.repo.PostRepo;
+import org.bana.repo.RoleRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -12,7 +26,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories("org.bana.repo")
 @SpringBootApplication
 public class MyBlogApplication {
-	/*@Autowired
+	@Autowired
 	private AuthorRepo authorRepo;
 	
 	@Autowired
@@ -22,13 +36,13 @@ public class MyBlogApplication {
 	private CategoryRepo categoryRepo;
 	
 	@Autowired
-	private PostRepo postRepo;*/
+	private PostRepo postRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyBlogApplication.class, args);
 	}
 	
-	/*@Bean
+	@Bean
 	public CommandLineRunner commandLineRunner() {
 		return (args) -> {
 			roleRepo.save(new Role(null, "ROLE_ADMIN", new Date(), "SYSTEM"));
@@ -36,9 +50,9 @@ public class MyBlogApplication {
 			categoryRepo.save(new Category(null, "Komputer", new Date(), "SYSTEM", null));
 			categoryRepo.save(new Category(null, "Sains", new Date(), "SYSTEM", null));
 			
-			for(Role role : roleRepo.findAll()) {
+			/*for(Role role : roleRepo.findAll()) {
 				System.out.println(role.getIdRole() + " " +  role.getRoleName());
-			}
+			}*/
 			authorRepo.save(new Author("admin", "admin", "Syabana", roleRepo.findByroleName("ROLE_ADMIN"), new Date(), "SYSTEM", null));
 			
 			Post post = new Post();
@@ -53,6 +67,6 @@ public class MyBlogApplication {
 			postRepo.save(post);
 			
 		};
-	}*/
+	}
 	
 }
