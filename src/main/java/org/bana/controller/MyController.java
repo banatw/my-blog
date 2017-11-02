@@ -121,12 +121,12 @@ public class MyController {
 			model.addAttribute("query", query);
 		}
 		model.addAttribute("paginations", paginations);
-		return "/admin/index";
+		return "home_admin";
 	}
 	
 	
 	@GetMapping("/admin/post_add")
-	public String showFormAddd(Model model) {
+	public String showFormAdd(Model model) {
 		PostForm postForm = new PostForm();
 		postForm.setPostDate(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(new Date()));
 		//postForm.setPostTime(new SimpleDateFormat("HH:mm").format(new Date()));
@@ -141,7 +141,7 @@ public class MyController {
 		}
 		model.addAttribute("postForm",postForm);
 		model.addAttribute("categories", categoryViews);
-		return "/admin/form";
+		return "form";
 	}
 	
 	@PostMapping("/admin/post_simpan")
@@ -227,7 +227,7 @@ public class MyController {
 			System.out.println("id : " + cv.getIdCategory() + " ; " + cv.getSelected());
 		}*/
 		model.addAttribute("categories", categoryViews);
-		return "/admin/form";
+		return "form";
 	}
 	
 	@GetMapping("")
@@ -267,7 +267,7 @@ public class MyController {
 			postViews.add(postView);
 		}
 		model.addAttribute("posts", postViews);
-		return "/blog/index";
+		return "index";
 	}
 	
 	@GetMapping("/post")
@@ -281,7 +281,7 @@ public class MyController {
 		postView.setAuthorName(post.getAuthor().getAuthorName());
 		postView.setIdPost(post.getIdPost());
 		model.addAttribute("postView", postView);
-		return "/blog/post";
+		return "post";
 	}
 	
 	@GetMapping("/admin/post_delete")
