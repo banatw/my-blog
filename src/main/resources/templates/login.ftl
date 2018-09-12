@@ -21,24 +21,24 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-4 col-md-4 col-lg-push-4">
-				{{#warning}}
+				<#if warning??>
 				<div class="alert alert-danger alert-dismissable" >
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-					<strong>{{warning}}</strong>
+					<strong>${warning}</strong>
 				</div>
-				{{/warning}}
+				</#if>
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<form method="post" action="/login" >
 							<div class="form-group">
 								<label for="username">Username</label> <input type="text"
-									id="username" name="username" class="form-control">
+									id="username" name="username" class="form-control" autocomplete="off">
 							</div>
 							<div class="form-group">
 								<label for="password">Password</label> <input type="password"
 									id="password" name="password" class="form-control">
 							</div>
-							<input type="hidden" name="_csrf" value="{{_csrf.token}}">
+							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 							<button type="submit" class="btn">Login</button>
 						</form>
 					</div>

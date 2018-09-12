@@ -53,7 +53,7 @@ public class MyBlogApplication {
 			/*for(Role role : roleRepo.findAll()) {
 				System.out.println(role.getIdRole() + " " +  role.getRoleName());
 			}*/
-			authorRepo.save(new Author("admin", "admin", "Syabana", roleRepo.findByroleName("ROLE_ADMIN"), new Date(), "SYSTEM", null));
+			authorRepo.save(new Author("admin", "password", "Syabana", roleRepo.findByroleName("ROLE_ADMIN"), new Date(), "SYSTEM", null));
 			
 			Post post = new Post();
 			post.setAuditDate(new Date());
@@ -61,7 +61,7 @@ public class MyBlogApplication {
 			post.setPostSubTitle("");
 			post.setCategory(categoryRepo.findBycategoryDescription("Komputer"));
 			post.setIdPost(UUID.randomUUID().toString().replace("-", ""));
-			post.setPostContent("My First Content");
+			post.setPostContent("<i>My First Content</i>");
 			post.setPostDate(new Date());
 			post.setPostTitle("Hello World");
 			postRepo.save(post);

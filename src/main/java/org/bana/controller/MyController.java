@@ -21,6 +21,7 @@ import org.bana.repo.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -72,7 +73,7 @@ public class MyController {
 		catch(NumberFormatException nfe) {
 			page=1;
 		}
-		PageRequest pageRequest = new PageRequest(Integer.valueOf(page), 10);
+		Pageable pageRequest = new PageRequest(Integer.valueOf(page), 10);
 		List<PostView> postsView = new ArrayList<>();
 		Page<Post> posts = postRepo.findByAuthorUsernameAndPostTitleContainsIgnoreCaseOrderByPostDateDesc(user.getUsername(),query,pageRequest);
 		for(Post post:posts) {
@@ -83,7 +84,7 @@ public class MyController {
 			postView.setPostTitle(post.getPostTitle());
 			postsView.add(postView);
 		}
-		List<Pagination> paginations = new ArrayList<>();
+		/*List<Pagination> paginations = new ArrayList<>();
 		Integer nilaiPageAwal = null;
 		Integer nilaiPageAkhir = null;
 		Integer currPage = page+1;
@@ -105,22 +106,22 @@ public class MyController {
 			else {
 				nilaiPageAkhir = nilaiPageAwal + 9; 
 			}
-		}
+		}*/
 		
 //		System.out.println(nilaiPageAwal);
 //		System.out.println(nilaiPageAkhir);
-		for(int i = nilaiPageAwal;i<=nilaiPageAkhir;i++) {
+		/*for(int i = nilaiPageAwal;i<=nilaiPageAkhir;i++) {
 			Pagination pagination = new Pagination(String.valueOf(i),currPage==i?"active":null);
 			paginations.add(pagination);
-		}
-		
-		//model.addAttribute("totalPages",posts.getTotalPages());
+		}*/
+		model.addAttribute("page",pageParam);
+		model.addAttribute("totalPages",posts.getTotalPages());
 		model.addAttribute("posts",postsView);
 		//model.addAttribute("currentPage", pageParam);
 		if(query!=null || query!="") {
 			model.addAttribute("query", query);
 		}
-		model.addAttribute("paginations", paginations);
+		//model.addAttribute("paginations", paginations);
 		return "home_admin";
 	}
 	
@@ -136,7 +137,6 @@ public class MyController {
 			CategoryView categoryView = new CategoryView();
 			categoryView.setCategoryDescription(category.getCategoryDescription());
 			categoryView.setIdCategory(String.valueOf(category.getIdCategory()));
-			categoryView.setSelected(null);
 			categoryViews.add(categoryView);
 		}
 		model.addAttribute("postForm",postForm);
@@ -217,9 +217,6 @@ public class MyController {
 			categoryView.setCategoryDescription(category.getCategoryDescription());
 			categoryView.setIdCategory(String.valueOf(category.getIdCategory()));
 			//System.out.println(category.getIdCategory());
-			if(post.getCategory().getIdCategory()==category.getIdCategory()) {
-				categoryView.setSelected("selected");
-			}
 			categoryViews.add(categoryView);
 		}
 		model.addAttribute("postForm",postForm);

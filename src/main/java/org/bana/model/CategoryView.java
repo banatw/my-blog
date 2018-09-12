@@ -5,7 +5,6 @@ public class CategoryView {
 	
 	private String categoryDescription;
 	
-	private String selected=null;
 
 	public CategoryView() {
 		// TODO Auto-generated constructor stub
@@ -25,14 +24,6 @@ public class CategoryView {
 
 	public void setCategoryDescription(String categoryDescription) {
 		this.categoryDescription = categoryDescription;
-	}
-
-	public String getSelected() {
-		return selected;
-	}
-
-	public void setSelected(String selected) {
-		this.selected = selected;
 	}
 
 }

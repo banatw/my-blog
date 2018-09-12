@@ -69,15 +69,14 @@
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    {{#postView}}
     <header class="intro-header" style="background-image: url('../blog-assets/img/post-bg.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>{{postTitle}}</h1>
-                        <h2 class="subheading">{{postSubTitle}}</h2>
-                        <span class="meta">Posted by <a href="#">{{authorName}}</a> on {{postDate}}</span>
+                        <h1>${postView.postTitle}</h1>
+                        <h2 class="subheading">${postView.postSubTitle}</h2>
+                        <span class="meta">Posted by <a href="#">${postView.authorName}</a> on ${postView.postDate}</span>
                     </div>
                 </div>
             </div>
@@ -89,12 +88,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    {{{postContent}}}
+                    ${postView.postContent}
                 </div>
             </div>
         </div>
     </article>
-	 {{/postView}}
     <hr>
 
     <!-- Footer -->

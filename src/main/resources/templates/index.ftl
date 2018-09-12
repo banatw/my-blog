@@ -87,31 +87,31 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                {{#posts}}
+                <#list posts as post>
                 <div class="post-preview">
-                    <a href="/post?idPost={{idPost}}">
+                    <a href="/post?idPost=${post.idPost}">
                         <h2 class="post-title">
-                           {{postTitle}}
+                           ${post.postTitle}
                         </h2>
                         <h3 class="post-subtitle">
-                            {{#postSubTitle}}
-                            {{postSubTitle}}
-                            {{/postSubTitle}}
+                            <#if post.postSubTitle??>
+                                ${post.postSubTitle}
+                            </#if>
                         </h3>
                     </a>
-                    <p class="post-meta">Posted by <a href="#">{{authorName}}</a> on {{postDate}}</p>
+                    <p class="post-meta">Posted by <a href="#">${post.authorName}</a> on ${post.postDate}</p>
                 </div>
                 <hr>
-                {{/posts}}
+                </#list>
                 <!-- Pager -->
                 <ul class="pager">
                     <li class="next">
-                    	{{#nextPage}}
-                        <a href="/index?page={{nextPage}}">Older Posts &rarr;</a>
-                        {{/nextPage}}
-                        {{#previousPage}}
-                        <a href="/index?page={{previousPage}}">&larr;Newer Posts </a>
-                    	{{/previousPage}}
+                    	<#if nextPage??>
+                        <a href="/index?page=${nextPage}">Older Posts &rarr;</a>
+                        </#if>
+                        <#if previousPage??>
+                        <a href="/index?page=${previousPage}">&larr;Newer Posts </a>
+                    	</#if>
                     </li>
                 </ul>
             </div>

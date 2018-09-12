@@ -45,8 +45,8 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li>
 							<form class="navbar-form navbar-left" method="post" action="/logout">
-								<input type="hidden" name="_csrf" value="{{_csrf.token}}">
 								<button type="submit" class="btn btn-default">Logout</button>
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 							</form>
 						</li>
 					</ul>
