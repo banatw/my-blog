@@ -1,10 +1,8 @@
-package org.bana.model;
+package org.bana.myblog.model;
 
 public class Pagination {
 	private String pageNumber;
 	private String className;
-
-	
 
 	public Pagination() {
 		// TODO Auto-generated constructor stub
@@ -31,7 +29,5 @@ public class Pagination {
 		this.pageNumber = pageNumber;
 		this.className = className;
 	}
-
-	
 
 }

@@ -1,4 +1,4 @@
-package org.bana.controller;
+package org.bana.myblog.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,15 +9,14 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import org.bana.entity.Category;
-import org.bana.entity.Post;
-import org.bana.model.CategoryView;
-import org.bana.model.Pagination;
-import org.bana.model.PostForm;
-import org.bana.model.PostView;
-import org.bana.repo.AuthorRepo;
-import org.bana.repo.CategoryRepo;
-import org.bana.repo.PostRepo;
+import org.bana.myblog.entity.Category;
+import org.bana.myblog.entity.Post;
+import org.bana.myblog.model.CategoryView;
+import org.bana.myblog.model.PostForm;
+import org.bana.myblog.model.PostView;
+import org.bana.myblog.repo.AuthorRepo;
+import org.bana.myblog.repo.CategoryRepo;
+import org.bana.myblog.repo.PostRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,46 +36,43 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class MyController {
 	@Autowired
 	private PostRepo postRepo;
-	
+
 	@Autowired
 	private CategoryRepo categoryRepo;
-	
+
 	@Autowired
 	private AuthorRepo authorRepo;
 
-	
 	public MyController() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@GetMapping("/login")
-	public String showLogin(String logout,String error, Model model) {
-		if(logout!=null) {
+	public String showLogin(String logout, String error, Model model) {
+		if (logout != null) {
 			model.addAttribute("warning", "Anda telah logout");
 		}
-		if(error!=null) {
+		if (error != null) {
 			model.addAttribute("warning", "Username atau Password Salah");
 		}
 		return "login";
 	}
 
-	
 	@GetMapping("/admin")
-	public String showAuthorList(Model model,
-			@RequestParam(name="page",defaultValue="1") String pageParam,
-			@RequestParam(name="query",defaultValue="") String query) {
-		Integer page=null;
+	public String showAuthorList(Model model, @RequestParam(name = "page", defaultValue = "1") String pageParam,
+			@RequestParam(name = "query", defaultValue = "") String query) {
+		Integer page = null;
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			page=Integer.parseInt(pageParam)-1;
+			page = Integer.parseInt(pageParam) - 1;
+		} catch (NumberFormatException nfe) {
+			page = 1;
 		}
-		catch(NumberFormatException nfe) {
-			page=1;
-		}
-		Pageable pageRequest = new PageRequest(Integer.valueOf(page), 10);
+		Pageable pageRequest = PageRequest.of(Integer.valueOf(page), 10); //new PageRequest(Integer.valueOf(page), 10);
 		List<PostView> postsView = new ArrayList<>();
-		Page<Post> posts = postRepo.findByAuthorUsernameAndPostTitleContainsIgnoreCaseOrderByPostDateDesc(user.getUsername(),query,pageRequest);
-		for(Post post:posts) {
+		Page<Post> posts = postRepo.findByAuthorUsernameAndPostTitleContainsIgnoreCaseOrderByPostDateDesc(
+				user.getUsername(), query, pageRequest);
+		for (Post post : posts) {
 			PostView postView = new PostView();
 			postView.setIdPost(post.getIdPost());
 			postView.setCategoryDescription(post.getCategory().getCategoryDescription());
@@ -107,25 +103,24 @@ public class MyController {
 				nilaiPageAkhir = nilaiPageAwal + 9; 
 			}
 		}*/
-		
-//		System.out.println(nilaiPageAwal);
-//		System.out.println(nilaiPageAkhir);
+
+		//		System.out.println(nilaiPageAwal);
+		//		System.out.println(nilaiPageAkhir);
 		/*for(int i = nilaiPageAwal;i<=nilaiPageAkhir;i++) {
 			Pagination pagination = new Pagination(String.valueOf(i),currPage==i?"active":null);
 			paginations.add(pagination);
 		}*/
-		model.addAttribute("page",pageParam);
-		model.addAttribute("totalPages",posts.getTotalPages());
-		model.addAttribute("posts",postsView);
+		model.addAttribute("page", pageParam);
+		model.addAttribute("totalPages", posts.getTotalPages());
+		model.addAttribute("posts", postsView);
 		//model.addAttribute("currentPage", pageParam);
-		if(query!=null || query!="") {
+		if (query != null || query != "") {
 			model.addAttribute("query", query);
 		}
 		//model.addAttribute("paginations", paginations);
 		return "home_admin";
 	}
-	
-	
+
 	@GetMapping("/admin/post_add")
 	public String showFormAdd(Model model) {
 		PostForm postForm = new PostForm();
@@ -133,31 +128,31 @@ public class MyController {
 		//postForm.setPostTime(new SimpleDateFormat("HH:mm").format(new Date()));
 		List<Category> categories = (List<Category>) categoryRepo.findAll();
 		List<CategoryView> categoryViews = new ArrayList<>();
-		for(Category category : categories) {
+		for (Category category : categories) {
 			CategoryView categoryView = new CategoryView();
 			categoryView.setCategoryDescription(category.getCategoryDescription());
 			categoryView.setIdCategory(String.valueOf(category.getIdCategory()));
 			categoryViews.add(categoryView);
 		}
-		model.addAttribute("postForm",postForm);
+		model.addAttribute("postForm", postForm);
 		model.addAttribute("categories", categoryViews);
 		return "form";
 	}
-	
+
 	@PostMapping("/admin/post_simpan")
-	public String simpan(@Valid @ModelAttribute PostForm form,BindingResult bindingResult,RedirectAttributes redirectAttributes) {
-		if(bindingResult.hasErrors()) {
-			if(form.getIdPost()=="") {
+	public String simpan(@Valid @ModelAttribute PostForm form, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			if (form.getIdPost() == "") {
 				redirectAttributes.addFlashAttribute("error", bindingResult.getFieldError().getDefaultMessage());
 				return "redirect:/admin/post_add";
-			}
-			else {
-				redirectAttributes.addFlashAttribute("error",  bindingResult.getFieldError().getDefaultMessage());
+			} else {
+				redirectAttributes.addFlashAttribute("error", bindingResult.getFieldError().getDefaultMessage());
 				return "redirect:/admin/post_edit?idPost=" + form.getIdPost();
 			}
 		}
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		if(form.getIdPost()=="") {
+		if (form.getIdPost() == "") {
 			Post post = new Post();
 			//String stringTgl = "";
 			try {
@@ -167,16 +162,15 @@ public class MyController {
 				// TODO Auto-generated catch block
 				//stringTgl = form.getPostDate() + " 00:00";
 			}
-			
+
 			post.setIdPost(UUID.randomUUID().toString().replace("-", ""));
 			post.setPostSubTitle(form.getPostSubTitle());
 			post.setAuthor(authorRepo.findByUsername(user.getUsername()));
-			post.setCategory(categoryRepo.findOne(Integer.valueOf(form.getIdCategory())));
+			post.setCategory(categoryRepo.findById(Integer.valueOf(form.getIdCategory())).get());
 			post.setPostTitle(form.getPostTitle());
 			post.setPostContent(form.getPostContent());
 			postRepo.save(post);
-		}
-		else {
+		} else {
 			Post post = new Post();
 			post.setAuditDate(new Date());
 			try {
@@ -185,24 +179,23 @@ public class MyController {
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 			}
-			
+
 			post.setIdPost(form.getIdPost());
 			post.setPostSubTitle(form.getPostSubTitle());
 			post.setAuthor(authorRepo.findByUsername(user.getUsername()));
-			post.setCategory(categoryRepo.findOne(Integer.valueOf(form.getIdCategory())));
+			post.setCategory(categoryRepo.findById(Integer.valueOf(form.getIdCategory())).get());
 			post.setPostTitle(form.getPostTitle());
 			post.setPostContent(form.getPostContent());
 			postRepo.save(post);
 		}
 		return "redirect:/admin";
 	}
-	
-	
+
 	@GetMapping("/admin/post_edit")
-	public String showFormEdit(@RequestParam("idPost") String idPost,Model model) {
-		Post post = postRepo.findOne(idPost);
+	public String showFormEdit(@RequestParam("idPost") String idPost, Model model) {
+		Post post = postRepo.findById(idPost).get();
 		PostForm postForm = new PostForm();
-		postForm.setIdCategory(String .valueOf(post.getCategory().getIdCategory()));
+		postForm.setIdCategory(String.valueOf(post.getCategory().getIdCategory()));
 		postForm.setIdPost(idPost);
 		postForm.setPostContent(post.getPostContent());
 		postForm.setPostDate(new SimpleDateFormat("dd-MM-yyyy HH:mm").format(post.getPostDate()));
@@ -212,48 +205,47 @@ public class MyController {
 		//System.out.println(post.getCategory().getIdCategory());
 		List<Category> categories = (List<Category>) categoryRepo.findAll();
 		List<CategoryView> categoryViews = new ArrayList<>();
-		for(Category category : categories) {
+		for (Category category : categories) {
 			CategoryView categoryView = new CategoryView();
 			categoryView.setCategoryDescription(category.getCategoryDescription());
 			categoryView.setIdCategory(String.valueOf(category.getIdCategory()));
 			//System.out.println(category.getIdCategory());
 			categoryViews.add(categoryView);
 		}
-		model.addAttribute("postForm",postForm);
+		model.addAttribute("postForm", postForm);
 		/*for(CategoryView cv:categoryViews) {
 			System.out.println("id : " + cv.getIdCategory() + " ; " + cv.getSelected());
 		}*/
 		model.addAttribute("categories", categoryViews);
 		return "form";
 	}
-	
+
 	@GetMapping("")
 	public String redirectIndex() {
 		return "redirect:/index";
 	}
-	
+
 	@GetMapping("/index")
-	public String showBlog(@RequestParam(name="page",defaultValue="0") String page, Model model) {
+	public String showBlog(@RequestParam(name = "page", defaultValue = "0") String page, Model model) {
 		Integer iPage = 0;
 		try {
 			iPage = Integer.parseInt(page);
-		}
-		catch (NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			iPage = 0;
 		}
-		PageRequest pageRequest = new PageRequest(iPage, 5);
+		PageRequest pageRequest = PageRequest.of(iPage, 5); //new PageRequest(iPage, 5);
 		Page<Post> posts = postRepo.findAllByOrderByPostDateDesc((pageRequest));
-		if(posts.getTotalPages()-1==iPage) {
-			iPage=1;
+		if (posts.getTotalPages() - 1 == iPage) {
+			iPage = 1;
 		}
-		if(posts.hasPrevious()) {
-			model.addAttribute("previousPage", iPage-1);
+		if (posts.hasPrevious()) {
+			model.addAttribute("previousPage", iPage - 1);
 		}
-		if(posts.hasNext()) {
-			model.addAttribute("nextPage", iPage+1);
+		if (posts.hasNext()) {
+			model.addAttribute("nextPage", iPage + 1);
 		}
 		List<PostView> postViews = new ArrayList<>();
-		for(Post post : posts) {
+		for (Post post : posts) {
 			PostView postView = new PostView();
 			postView.setPostSubTitle(post.getPostSubTitle());
 			postView.setPostTitle(post.getPostTitle());
@@ -266,10 +258,10 @@ public class MyController {
 		model.addAttribute("posts", postViews);
 		return "index";
 	}
-	
+
 	@GetMapping("/post")
 	public String showPost(@RequestParam("idPost") String idPost, Model model) {
-		Post post = postRepo.findOne(idPost);
+		Post post = postRepo.findById(idPost).get();
 		PostView postView = new PostView();
 		postView.setPostSubTitle(post.getPostSubTitle());
 		postView.setPostTitle(post.getPostTitle());
@@ -280,11 +272,11 @@ public class MyController {
 		model.addAttribute("postView", postView);
 		return "post";
 	}
-	
+
 	@GetMapping("/admin/post_delete")
 	public String showFormDelete(@RequestParam("idPost") String idPost) {
-		postRepo.delete(idPost);
+		postRepo.deleteById(idPost);
 		return "redirect:/admin";
 	}
-	
+
 }

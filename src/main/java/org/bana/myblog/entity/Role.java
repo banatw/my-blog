@@ -1,4 +1,4 @@
-package org.bana.entity;
+package org.bana.myblog.entity;
 
 import java.util.Date;
 
@@ -13,18 +13,18 @@ import javax.persistence.TemporalType;
 @Entity
 public class Role {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idRole;
-	
-	@Column(length=30)
+
+	@Column(length = 30)
 	private String roleName;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date auditDate;
-	
-	@Column(length=30)
+
+	@Column(length = 30)
 	private String auditUser;
-	
+
 	public Role() {
 		// TODO Auto-generated constructor stub
 	}

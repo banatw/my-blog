@@ -1,21 +1,21 @@
-package org.bana.model;
+package org.bana.myblog.model;
 
 public class PostView {
-	
+
 	private String idPost;
-	
+
 	private String postTitle;
-	
+
 	private String postDate;
-	
+
 	private String postSubTitle;
-	
+
 	private String categoryDescription;
-	
+
 	private String postContent;
-	
+
 	private String authorName;
-	
+
 	public PostView() {
 		// TODO Auto-generated constructor stub
 	}
@@ -59,8 +59,6 @@ public class PostView {
 		this.postDate = postDate;
 		this.categoryDescription = categoryDescription;
 	}
-
-	
 
 	public String getPostSubTitle() {
 		return postSubTitle;

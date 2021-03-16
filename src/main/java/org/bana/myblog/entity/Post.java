@@ -1,4 +1,4 @@
-package org.bana.entity;
+package org.bana.myblog.entity;
 
 import java.util.Date;
 
@@ -13,28 +13,25 @@ import javax.persistence.TemporalType;
 public class Post {
 	@Id
 	private String idPost;
-	
-	@Column(length=255)
+
+	@Column(length = 255)
 	private String postTitle;
-	
-	@Column(length=255)
+
+	@Column(length = 255)
 	private String postSubTitle;
-	
-	
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date postDate;
-	
-	@Column(columnDefinition="TEXT")
+
+	@Column(columnDefinition = "TEXT")
 	private String postContent;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date auditDate;
 
-	
 	@ManyToOne
 	private Category category;
-	
+
 	@ManyToOne
 	private Author author;
 
@@ -81,7 +78,6 @@ public class Post {
 	public void setAuditDate(Date auditDate) {
 		this.auditDate = auditDate;
 	}
-
 
 	public Category getCategory() {
 		return category;

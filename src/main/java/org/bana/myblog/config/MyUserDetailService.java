@@ -1,7 +1,7 @@
-package org.bana.config;
+package org.bana.myblog.config;
 
-import org.bana.entity.Author;
-import org.bana.repo.AuthorRepo;
+import org.bana.myblog.entity.Author;
+import org.bana.myblog.repo.AuthorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class MyUserDetailService implements UserDetailsService {
 	@Autowired
 	private AuthorRepo userRepo;
-	
+
 	public MyUserDetailService() {
 		// TODO Auto-generated constructor stub
 	}
@@ -23,13 +23,12 @@ public class MyUserDetailService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String arg0) throws UsernameNotFoundException {
 		// TODO Auto-generated method stub
-		Author author = userRepo.findOne(arg0);
-		if(author!=null) {
-			User user = new User(author.getUsername(), author.getPassword(), 
+		Author author = userRepo.findById(arg0).get();
+		if (author != null) {
+			User user = new User(author.getUsername(), author.getPassword(),
 					AuthorityUtils.commaSeparatedStringToAuthorityList(author.getRole().getRoleName()));
 			return user;
-		}
-		else {
+		} else {
 			throw new BadCredentialsException("error");
 		}
 	}

@@ -1,6 +1,6 @@
-package org.bana.repo;
+package org.bana.myblog.repo;
 
-import org.bana.entity.Role;
+import org.bana.myblog.entity.Role;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

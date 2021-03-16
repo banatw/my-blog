@@ -1,10 +1,9 @@
-package org.bana.model;
+package org.bana.myblog.model;
 
 public class CategoryView {
 	private String idCategory;
-	
+
 	private String categoryDescription;
-	
 
 	public CategoryView() {
 		// TODO Auto-generated constructor stub

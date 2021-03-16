@@ -1,4 +1,4 @@
-package org.bana.entity;
+package org.bana.myblog.entity;
 
 import java.util.Date;
 import java.util.List;
@@ -15,21 +15,21 @@ import javax.persistence.TemporalType;
 @Entity
 public class Category {
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer idCategory;
-	
-	@Column(length=30)
+
+	@Column(length = 30)
 	private String categoryDescription;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date auditDate;
-	
-	@Column(length=30)
+
+	@Column(length = 30)
 	private String auditUser;
-	
-	@OneToMany(mappedBy="category")
+
+	@OneToMany(mappedBy = "category")
 	private List<Post> posts;
-	
+
 	public Category() {
 		// TODO Auto-generated constructor stub
 	}
@@ -65,8 +65,6 @@ public class Category {
 	public void setAuditUser(String auditUser) {
 		this.auditUser = auditUser;
 	}
-
-	
 
 	public List<Post> getPosts() {
 		return posts;

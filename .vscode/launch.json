@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-MyBlogApplication<my-blog>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "org.bana.myblog.MyBlogApplication",
+            "projectName": "my-blog",
+            "args": ""
+        }
+    ]
+}
