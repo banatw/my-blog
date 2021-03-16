@@ -1,2 +1,2 @@
 # my-blog
-cms sederhana menggunakan Spring Boot JPA + Mustache Template
+cms sederhana menggunakan Spring Boot JPA + Freemarker Template
